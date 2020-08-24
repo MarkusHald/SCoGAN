@@ -263,23 +263,8 @@ class SCoGANTrainer(object):
             if args.use_cycle:
                 gradients_of_encoder = tape3.gradient(total_recon_loss, self.encoder.trainable_variables)
                 args.gen_optimizer.apply_gradients(zip(gradients_of_encoder, self.encoder.trainable_variables))
-            weight_sim = self.genPenal.weight_regularizer(self.g1, self.g2, 21)
             self.full_training_time += time.time() - start
-
-            '''
-            # Check if shared weights are equal between generators
-            a = self.g1.trainable_variables
-            b = self.g2.trainable_variables
-            mask = []
-
-            for i in range(8):
-                if np.array_equal(a[i].numpy(), b[i].numpy()):
-                    mask.append(1)
-                else:
-                    mask.append(0)
-            if 0 in mask:
-                print("ERROR - weight sharing failure:" + mask)
-            '''
+            weight_sim = self.genPenal.weight_regularizer(self.g1, self.g2)
 
             # Collect loss values
             self.hist_d1.append(d1_loss)

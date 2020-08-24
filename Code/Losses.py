@@ -60,3 +60,13 @@ def set_losses(args):
         return cross_entropy_disc, cross_entropy_gen
     elif args.loss == 'wgan':
         return wasserstein_disc, wasserstein_gen
+
+
+class GeneratorLosses:
+    def cross_entropy_gen(self, fake_output):
+        G_loss = k_cross_entropy(tf.ones_like(fake_output), fake_output)
+        return G_loss
+
+    def wasserstein_gen(self, fake_output):
+        G_loss = -tf.reduce_mean(fake_output)
+        return G_loss

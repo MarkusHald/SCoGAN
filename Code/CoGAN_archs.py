@@ -8,34 +8,25 @@ layers = tf.keras.layers
 def cogan_generators_digit(args):
     channels = args.dataset_dim[3]
 
-    output1 = []
-    output2 = []
-
     # Shared weights between generators
     noise = tf.keras.layers.Input(shape=(args.noise_dim,))
 
     model = tf.keras.layers.Dense(1024*4*4, kernel_initializer=args.w_init, kernel_regularizer=args.wd, bias_initializer=args.bi)(noise)
     model = tf.keras.layers.Reshape((4, 4, 1024))(model)
-    model = (tf.keras.layers.BatchNormalization())(model)
-    model = (tf.keras.layers.PReLU(args.prelu_init))(model)
+    model = tf.keras.layers.BatchNormalization()(model)
+    model = tf.keras.layers.PReLU(args.prelu_init)(model)
 
-    model = (tf.keras.layers.Conv2DTranspose(512, (3,3), strides=(2, 2), padding='same', kernel_initializer=args.w_init, kernel_regularizer=args.wd, bias_initializer=args.bi))(model)
-    model = (tf.keras.layers.BatchNormalization())(model)
-    features_4x4 = (tf.keras.layers.PReLU())(model)
-    output1.append(features_4x4)
-    output2.append(features_4x4)
+    model = tf.keras.layers.Conv2DTranspose(512, (3,3), strides=(2, 2), padding='same', kernel_initializer=args.w_init, kernel_regularizer=args.wd, bias_initializer=args.bi)(model)
+    model = tf.keras.layers.BatchNormalization()(model)
+    model = tf.keras.layers.PReLU()(model)
 
-    model = (tf.keras.layers.Conv2DTranspose(256, (3,3), strides=(2, 2), padding='same', kernel_initializer=args.w_init, kernel_regularizer=args.wd, bias_initializer=args.bi))(model)
-    model = (tf.keras.layers.BatchNormalization())(model)
-    features_8x8 = (tf.keras.layers.PReLU())(model)
-    output1.append(features_8x8)
-    output2.append(features_8x8)
+    model = tf.keras.layers.Conv2DTranspose(256, (3,3), strides=(2, 2), padding='same', kernel_initializer=args.w_init, kernel_regularizer=args.wd, bias_initializer=args.bi)(model)
+    model = tf.keras.layers.BatchNormalization()(model)
+    model = tf.keras.layers.PReLU()(model)
 
-    model = (tf.keras.layers.Conv2DTranspose(128, (3,3), strides=(2, 2), padding='same', kernel_initializer=args.w_init, kernel_regularizer=args.wd, bias_initializer=args.bi))(model)
-    model = (tf.keras.layers.BatchNormalization())(model)
-    model = (tf.keras.layers.PReLU())(model)
-    output1.append(model)
-    output2.append(model)
+    model = tf.keras.layers.Conv2DTranspose(128, (3,3), strides=(2, 2), padding='same', kernel_initializer=args.w_init, kernel_regularizer=args.wd, bias_initializer=args.bi)(model)
+    model = tf.keras.layers.BatchNormalization()(model)
+    model = tf.keras.layers.PReLU()(model)
 
     # Generator 1
     img1 = tf.keras.layers.Conv2DTranspose(channels, (6,6), strides=(1, 1), activation='tanh', padding='same', kernel_initializer=args.w_init, kernel_regularizer=args.wd, bias_initializer=args.bi)(model)
@@ -43,9 +34,7 @@ def cogan_generators_digit(args):
     # Generator 2
     img2 = tf.keras.layers.Conv2DTranspose(channels, (6,6), strides=(1, 1), activation='tanh', padding='same', kernel_initializer=args.w_init, kernel_regularizer=args.wd, bias_initializer=args.bi)(model)
 
-    output1.append(img1)
-    output2.append(img2)
-    return keras.Model(noise, output1), keras.Model(noise, output2)
+    return keras.Model(noise, img1), keras.Model(noise, img2)
 
 
 def cogan_discriminators_digit(args):

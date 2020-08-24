@@ -112,21 +112,6 @@ class CoGANTrainer(object):
 
             self.full_training_time += time.time() - start
 
-            '''
-            # Check if shared weights are equal between generators
-            a = self.g1.trainable_variables
-            b = self.g2.trainable_variables
-            mask = []
-
-            for i in range(8):
-                if np.array_equal(a[i].numpy(), b[i].numpy()):
-                    mask.append(1)
-                else:
-                    mask.append(0)
-            if 0 in mask:
-                print("ERROR - weight sharing failure:" + mask)
-            '''
-
             # Collect loss values
             self.hist_d1.append(d1_loss)
             self.hist_d2.append(d2_loss)

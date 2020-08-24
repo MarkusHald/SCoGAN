@@ -144,11 +144,9 @@ def select_optimisers(args):
         raise NotImplementedError()
 
 
-def gen_noise(args, gen_noise_seed=False, style_transfer=False):
+def gen_noise(args, gen_noise_seed=False):
     if gen_noise_seed:
         batch_size = args.num_samples_to_gen
-    elif style_transfer:
-        batch_size = 1
     else:
         batch_size = args.batch_size
 

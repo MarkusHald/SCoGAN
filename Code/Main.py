@@ -4,6 +4,7 @@ import time
 from Code import Utils as u, Data as dt, GAN_trainer as gan_t, CoGAN_trainer as cogan_t, SCoGAN_trainer as scogan_t
 import argparse
 import os.path
+import matplotlib.pyplot as plt
 
 parser = argparse.ArgumentParser()
 
@@ -100,7 +101,6 @@ args.seed = u.gen_noise(args, gen_noise_seed=True)
 tf.random.set_seed(2020)
 np.random.seed(2020)
 
-#st.style_transfer([image_celeb], args, 'C:/Users/marku/Desktop/gan_training_output/perceptual/sw_0.00000000001_cw_0.001/20k/celeba/41735/generator1', verbose=True)
 #u.latent_walk('C:/users/marku/Desktop/gan_training_output/relax_weight_sharing/26508/generator1','C:/Users/marku/Desktop/gan_training_output/relax_weight_sharing/26508/generator2',100,3)
 
 u.select_optimisers(args)
