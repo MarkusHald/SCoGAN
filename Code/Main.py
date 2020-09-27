@@ -67,15 +67,15 @@ args = parser.parse_args()
 
 # Debugging
 
-args.gan_type = "scogan"
+args.gan_type = "cogan"
 args.loss = 'ce'
 args.dir = 'C:/Users/marku/Desktop/gan_training_output/testing'
-args.g_arch = '32'
-args.d_arch = '32'
+args.g_arch = 'digit'
+args.d_arch = 'digit'
 args.batch_size = 8
 args.cogan_data = 'mnist2edge'
-args.perceptual_loss = True
-args.style_weight = 0.000001
+#args.perceptual_loss = True
+#args.style_weight = 0.000001
 #args.dataset = 'celeba'
 #args.disc_penalty = 'wgan-gp'
 #args.gen_penalty = 'feature'
@@ -191,7 +191,7 @@ elif args.gan_type == 'scogan':
     if args.use_cycle:
         ganTrainer.encoder.save(args.dir + '/encoder')
 
-elif args.gan_type =='sampler':
+elif args.gan_type == 'sampler':
     np.load('c:/users/palmi/desktop/Experiments/39056/losses/')
 
     g1 = tf.keras.models.load_model('c:/users/palmi/desktop/Experiments/39056/generator1')
